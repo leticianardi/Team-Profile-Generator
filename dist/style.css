@@ -1,12 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Mohave&display=swap');
+
+* {
+    font-family: 'Mohave', sans-serif;
+}
+
 .team-heading {
-    background-color: #E84855;
+    background-color: #242423;
     color: #ffffff;
+}
+
+body {
+    background-color: #333533;
+}
+
+.img-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    border: 4px solid #242423;
+    border-radius: 40%;
+    margin-bottom: 10px;
+    padding: 20px;
+    background-size: cover;
+    background-position: center center;
+    background-image: url("../src/images/01.png");
 }
 
 .team-area {
     max-width: 1000px;
     margin: 3em auto;
     flex-wrap: wrap;
+    background-color: #333533;
 }
 
 .employee-card {
@@ -14,13 +40,25 @@
     max-width: 280px;
     width: 90%;
     min-height: 22rem;
-    background-color: #007bff;
+    background-color: #f5cb5c;
     color: white;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;    
     box-shadow: 4px 4px 8px rgba(0,0,0,0.7);
     border: none;
+}
+
+.card-header {
+    background-color: #f5cb5c;
+    justify-content: center;
+}
+
+.employee-card:hover{
+    cursor: pointer;
+    box-shadow: 0 0.4rem 1.4rem 0 #cfdbd5;
+    transform: scale(1.02);
+    transform: transform 100ms;
 }
 
 .card-body {

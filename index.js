@@ -92,9 +92,7 @@ function repeat(role, roleInfo) {
 
     .then(({ employeeName, employeeId, employeeEmail, addMoreMembers }) => {
       let member;
-      if (role === 'manager') {
-        member = new Manager(employeeName, employeeId, employeeEmail, roleInfo)
-      } else if (role === 'Engineer') {
+      if (role === 'Engineer') {
         member = new Engineer(employeeName, employeeId, employeeEmail, roleInfo)
       } else if (role === 'Intern') {
         member = new Intern(employeeName, employeeId, employeeEmail, roleInfo)
@@ -102,8 +100,8 @@ function repeat(role, roleInfo) {
 
       // push the answers to a new array
       teamMembers.push(member);
-      if (addMoreMembers) { 
-        addMember(); 
+      if (addMoreMembers) {
+        addMember();
       } else {
         // generate HTML file by calling generateHTML and passing the array
         fs.writeFile("./dist/team.html", renderHTML(teamMembers), (err) => {
@@ -116,11 +114,50 @@ function repeat(role, roleInfo) {
 }
 
 // start app
-function init() { 
+function init() {
   inquirer.prompt([
     {
       type: "input",
-      name: "officeNumber",
+      name: "employeeName",
+      message: "What is the manager's name?",
+      validate: answer => {
+        if (answer !== "") {
+          return true;
+        }
+        return "Please enter at least one character.";
+      }
+    },
+    {
+      type: "input",
+      name: "employeeId",
+      message: "What is the manager's id?",
+      validate: answer => {
+        const pass = answer.match(
+          /^[1-9]\d*$/
+        );
+        if (pass) {
+          return true;
+        }
+        return "Please enter a valid id.";
+      }
+    },
+    {
+      type: "input",
+      name: "employeeEmail",
+      message: "What is the manager's e-mail?",
+      validate: answer => {
+        const pass = answer.match(
+          /\S+@\S+\.\S+/
+        );
+        if (pass) {
+          return true;
+        }
+        return "Please enter a valid e-mail address.";
+      }
+    },
+    {
+      type: "input",
+      name: "roleInfo",
       message: "What is the team manager's office number?",
       validate: answer => {
         const pass = answer.match(
@@ -133,10 +170,12 @@ function init() {
       }
     },
   ])
-  .then(({ role, roleInfo }) => {
-      role = 'manager'; 
-      repeat(role, roleInfo);
-  })
+    .then(({ employeeName, employeeId, employeeEmail, roleInfo }) => {
+      let member = new Manager(employeeName, employeeId, employeeEmail, roleInfo)
+      teamMembers.push(member)
+
+      addMember()
+    })
 }
 
 // run the app
