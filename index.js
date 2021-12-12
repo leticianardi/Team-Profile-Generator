@@ -1,112 +1,143 @@
-const fs = require('fs');
-const inquirer = require('inquirer');
+const path = require("path");
+const fs = require("fs");
 
-const pageTemplate = require('./src/page-template.js');
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const inquirer = require("inquirer");
 
-const Employee = require('./lib/Employee');
-const Manager = require('./lib/Manager');
-const Engineer = require('./lib/Engineer');
-const Intern = require('./lib/Intern');
-
-// const idArray = [];
+const render = require("./src/page-template.js");
 
 const teamMembers = [];
+// const idArray = [];
+
+const questions = [
+  {
+    type: "input",
+    name: "employeeName",
+    message: "What is the team manager's name?",
+    validate: answer => {
+      if (answer !== "") {
+        return true;
+      }
+      return "Please enter at least one character.";
+    }
+  },
+  {
+    type: "input",
+    name: "employeeId",
+    message: "What is the team manager's id?",
+    validate: answer => {
+      const pass = answer.match(
+        /^[1-9]\d*$/
+      );
+      if (pass) {
+        return true;
+      }
+      return "Please enter a valid id.";
+    }
+  },
+  {
+    type: "input",
+    name: "employeeEmail",
+    message: "What is the team manager's e-mail?",
+    validate: answer => {
+      const pass = answer.match(
+        /\S+@\S+\.\S+/
+      );
+      if (pass) {
+        return true;
+      }
+      return "Please enter a valid e-mail address.";
+    }
+  },
+  {
+    type: "confirm",
+    name: "addMoreMembers",
+    message: "Would you like to add more team members?",
+  },
+];
 
 
-function gettingStarted() {
-
-  function createEmployee() {
-    console.log('Please, add your team');
-    inquirer.prompt([
-      {
-        type: "input",
-        name: "name",
-        message: "Enter the employee's name (Required):",
-        validate: answer => {
-          if (answer !== "") {
-            return true;
-          }
-          return "Please enter a name.";
-        }
-      },
-      {
-        type: "input",
-        name: "id",
-        message: "Enter the employee's ID (Required):",
-        validate: answer => {
-          const pass = answer.match(
-            /^[1-9]\d*$/
-          );
-          if (pass) {
-            return true;
-          }
-          return "Please enter a valid number.";
-        }
-      },
-      {
-        type: "input",
-        name: "email",
-        message: "Enter the employee's e-mail (Required):",
-        validate: answer => {
-          const pass = answer.match(
-            /\S+@\S+\.\S+/
-          );
-          if (pass) {
-            return true;
-          }
-          return "Please enter a valid e-mail address.";
-        }
-      },
-      {
-        type: "input",
-        name: "officeNumber",
-        message: "What is the team employee's office number?",
-        validate: answer => {
-          const pass = answer.match(
-            /^[1-9]\d*$/
-          );
-          if (pass) {
-            return true;
-          }
-          return "Please enter a valid office number.";
-        }
-      },
-      {
-        type: 'confirm',
-        name: 'confirmMembers',
-        message: 'Would you like to add more team members?'
-      },
-    ]).then(answers => {
-      const employee = new Employee(answers.name, answers.id, answers.email, answers.officeNumber);
-      teamMembers.push(employee);
-    })
-  }
-}
-
-
-function addTeamInfo() {
+//function to add team members if they're engineer or intern
+function addMember() {
   inquirer.prompt([
     {
-      type: 'list',
-      name: 'memberRole',
-      message: 'Choose the team member role:',
+      type: "list",
+      name: "role",
+      message: "Which type of team member would you like to add?",
       choices: [
-        'Engineer',
-        'Inter',
-        'Team is complete'
-      ]
+        "Engineer",
+        "Intern",
+        "My team is complete"
+      ],
     },
     {
-      type: 'input',
-      name: 'roleInfo',
-      message: 'For Engineer, enter GitHub user; for Intern, enter school name',
+      type: "input",
+      name: "roleInfo",
+      message: "For Engineer, enter GitHub username; for Intern, enter school's name",
       validate: answer => {
         if (answer !== "") {
           return true;
         }
-        return "Please enter valid information.";
+        return "Please enter at least one character.";
       }
-    },
-  ]).then(({memebrRole, roleInfo}) => {reapet (memberRole, roleInfo); })
+    }
+  ])
+    .then(({ role, roleInfo }) => { repeat(role, roleInfo); })
 }
 
+function repeat(role, roleInfo) {
+  inquirer.prompt(questions)
+
+    .then(({ employeeName, employeeId, employeeEmail, addMoreMembers }) => {
+      let member;
+      if (role === 'manager') {
+        member = new Manager(employeeName, employeeId, employeeEmail, roleInfo)
+      } else if (role === 'Engineer') {
+        member = new Engineer(employeeName, employeeId, employeeEmail, roleInfo)
+      } else if (role === 'Intern') {
+        member = new Intern(employeeName, employeeId, employeeEmail, roleInfo)
+      }
+
+      // push the answers to a new array
+      teamMembers.push(member);
+      if (addMoreMembers) { 
+        addMember(); 
+      } else {
+        // generate HTML file by calling generateHTML and passing the array
+        fs.writeFile('./dist/team.html', generateHTML(teamMembers), (err) => {
+          // display error or success
+          if (err) { console.log('There was an error', err) }
+          console.log("Successful."); //success
+        });
+      }
+    })
+}
+
+// start app
+function init() { 
+  inquirer.prompt([
+    {
+      type: "input",
+      name: "employeeOfficeNumber",
+      message: "What is the team manager's office number?",
+      validate: answer => {
+        const pass = answer.match(
+          /^[1-9]\d*$/
+        );
+        if (pass) {
+          return true;
+        }
+        return "Please enter a valid office number.";
+      }
+    },
+  ])
+  .then(({ role, roleInfo }) => {
+      role = 'manager'; 
+      repeat(role, roleInfo);
+  })
+}
+
+// run the app
+init();
