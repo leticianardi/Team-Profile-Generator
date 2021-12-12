@@ -9,7 +9,6 @@ const inquirer = require("inquirer");
 const renderHTML = require("./src/pageHTML.js");
 
 const teamMembers = [];
-// const idArray = [];
 
 const questions = [
   {
