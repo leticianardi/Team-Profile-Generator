@@ -1,7 +1,11 @@
 # Team Profile Generator
 
 ## Installation
-First install node, navigate to your directory and type npm install inquirer and npm install jest --save-dev on the command line. Then type npm install inquirer where helps to push the questions out to the user.
+First install node, navigate to your directory and install the packages on your command line:
+```
+npm i jest --save-dev
+npm install inquirer
+```
 
 ## Mock-Up
 
