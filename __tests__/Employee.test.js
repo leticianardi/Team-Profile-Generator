@@ -7,55 +7,45 @@ test("create an employee object", () => {
 });
 
 
-test("get employee's name from the object", () => {
- const name = 'newname'
+test("get employee's name from constructor argument", () => {
+ const name = "Cat"
  const employee = new Employee(name)
  expect(employee.name).toBe(name)
 })
 
 test("get employee's ID", () => {
- const name = 'newname'
- const id = 1;
- const employee = new Employee(name,id)
+ const testValue = 100;
+ const employee = new Employee("name", testValue)
  expect(employee.id).toEqual(expect.any(Number))
 })
 
 test ("get employee's email", ()=> {
- const name = 'newname'
- const id = 1
- const email = 'email@any.com'
- const employee = new Employee(name, id, email)
- expect(employee.email).toBe(email)
+ const testValue = "email@any.com"
+ const employee = new Employee("Cat", 1, testValue)
+ expect(employee.email).toBe(testValue)
 })
 
 test('test getName()', () => {
- const name = 'newname'
- const employee = new Employee(name)
- 
- expect(employee.getName()).toBe(name)
+ const testValue = "Cat"
+ const employee = new Employee(testValue)
+ expect(employee.getName()).toBe(testValue)
 });
 
 test('test getId()', () => {
- const name = 'newname'
- const id = 1;
- const employee = new Employee(name,id)
-
+ const testValue = 100;
+ const employee = new Employee("Cat", testValue)
  expect(employee.getId()).toEqual(expect.any(Number))
 });
 
 
 test('test getEmail()', () => {
- const name = 'newname'
- const id = 1
- const email = 'email@any.com'
- const employee = new Employee(name, id, email)
-
- expect(employee.getEmail()).toBe(email)
+ const testValue = 'email@any.com'
+ const employee = new Employee("Cat", 1, testValue)
+ expect(employee.getEmail()).toBe(testValue)
 });
 
-test('getRole()', () => {
- const employee = new Employee() 
- const role = "Employee";
-
- expect(employee.getRole()).toBe(role);
+test("getRole() should return \"Employee\"", () => {
+ const testValue = "Employee"; 
+ const employee = new Employee("Cat", 1, "email@nay.com");
+ expect(employee.getRole()).toBe(testValue);
 });
