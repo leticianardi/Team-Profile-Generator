@@ -8,9 +8,10 @@ const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 
-// 
-// const teamMembers = [];
 // const idArray = [];
+
+const teamMembers = [];
+
 
 function gettingStarted() {
 
@@ -58,7 +59,7 @@ function gettingStarted() {
       },
       {
         type: "input",
-        name: "OfficeNumber",
+        name: "officeNumber",
         message: "What is the team employee's office number?",
         validate: answer => {
           const pass = answer.match(
@@ -75,12 +76,15 @@ function gettingStarted() {
         name: 'confirmMembers',
         message: 'Would you like to add more team members?'
       },
-    ])
+    ]).then(answers => {
+      const employee = new Employee(answers.name, answers.id, answers.email, answers.officeNumber);
+      teamMembers.push(employee);
+    })
   }
 }
 
 
-function addTeam() {
+function addTeamInfo() {
   inquirer.prompt([
     {
       type: 'list',
@@ -89,14 +93,20 @@ function addTeam() {
       choices: [
         'Engineer',
         'Inter',
-        'I dont want to add any more members'
+        'Team is complete'
       ]
     },
     {
       type: 'input',
-      name: 'teamInfo',
-      message: 'For Engineer, enter GitHub user; for Intern, enter school name'
-    }]
-  )
+      name: 'roleInfo',
+      message: 'For Engineer, enter GitHub user; for Intern, enter school name',
+      validate: answer => {
+        if (answer !== "") {
+          return true;
+        }
+        return "Please enter valid information.";
+      }
+    },
+  ]).then(({memebrRole, roleInfo}) => {reapet (memberRole, roleInfo); })
 }
 
