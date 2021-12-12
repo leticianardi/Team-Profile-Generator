@@ -6,7 +6,7 @@ const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 
-const render = require("./src/page-template.js");
+const renderHTML = require("./src/pageHTML.js");
 
 const teamMembers = [];
 // const idArray = [];
@@ -15,7 +15,7 @@ const questions = [
   {
     type: "input",
     name: "employeeName",
-    message: "What is the team manager's name?",
+    message: "What is the employee's name?",
     validate: answer => {
       if (answer !== "") {
         return true;
@@ -26,7 +26,7 @@ const questions = [
   {
     type: "input",
     name: "employeeId",
-    message: "What is the team manager's id?",
+    message: "What is the employee's id?",
     validate: answer => {
       const pass = answer.match(
         /^[1-9]\d*$/
@@ -40,7 +40,7 @@ const questions = [
   {
     type: "input",
     name: "employeeEmail",
-    message: "What is the team manager's e-mail?",
+    message: "What is the employee's e-mail?",
     validate: answer => {
       const pass = answer.match(
         /\S+@\S+\.\S+/
@@ -106,7 +106,7 @@ function repeat(role, roleInfo) {
         addMember(); 
       } else {
         // generate HTML file by calling generateHTML and passing the array
-        fs.writeFile('./dist/team.html', generateHTML(teamMembers), (err) => {
+        fs.writeFile("./dist/team.html", renderHTML(teamMembers), (err) => {
           // display error or success
           if (err) { console.log('There was an error', err) }
           console.log("Successful."); //success
@@ -120,7 +120,7 @@ function init() {
   inquirer.prompt([
     {
       type: "input",
-      name: "employeeOfficeNumber",
+      name: "officeNumber",
       message: "What is the team manager's office number?",
       validate: answer => {
         const pass = answer.match(
