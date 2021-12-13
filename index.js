@@ -11,7 +11,46 @@ const renderHTML = require("./src/pageHTML.js");
 const teamMembers = [];
 // const idArray = [];
 
-const addMembersQuestion = [
+const questions = [
+  {
+    type: "input",
+    name: "employeeName",
+    message: "What is the employee's name?",
+    validate: answer => {
+      if (answer !== "") {
+        return true;
+      }
+      return "Please enter at least one character.";
+    }
+  },
+  {
+    type: "input",
+    name: "employeeId",
+    message: "What is the employee's id?",
+    validate: answer => {
+      const pass = answer.match(
+        /^[1-9]\d*$/
+      );
+      if (pass) {
+        return true;
+      }
+      return "Please enter a valid id.";
+    }
+  },
+  {
+    type: "input",
+    name: "employeeEmail",
+    message: "What is the employee's e-mail?",
+    validate: answer => {
+      const pass = answer.match(
+        /\S+@\S+\.\S+/
+      );
+      if (pass) {
+        return true;
+      }
+      return "Please enter a valid e-mail address.";
+    }
+  },
   {
     type: "confirm",
     name: "addMoreMembers",
@@ -35,45 +74,6 @@ function addMember() {
     },
     {
       type: "input",
-      name: "employeeName",
-      message: "What is the employee's name?",
-      validate: answer => {
-        if (answer !== "") {
-          return true;
-        }
-        return "Please enter at least one character.";
-      }
-    },
-    {
-      type: "input",
-      name: "employeeId",
-      message: "What is the employee's id?",
-      validate: answer => {
-        const pass = answer.match(
-          /^[1-9]\d*$/
-        );
-        if (pass) {
-          return true;
-        }
-        return "Please enter a valid id.";
-      }
-    },
-    {
-      type: "input",
-      name: "employeeEmail",
-      message: "What is the employee's e-mail?",
-      validate: answer => {
-        const pass = answer.match(
-          /\S+@\S+\.\S+/
-        );
-        if (pass) {
-          return true;
-        }
-        return "Please enter a valid e-mail address.";
-      }
-    },
-    {
-      type: "input",
       name: "roleInfo",
       message: "For Engineer, enter GitHub username; for Intern, enter school's name",
       validate: answer => {
@@ -88,7 +88,7 @@ function addMember() {
 }
 
 function repeat(role, roleInfo) {
-  inquirer.prompt(addMembersQuestion)
+  inquirer.prompt(questions)
 
     .then(({ employeeName, employeeId, employeeEmail, addMoreMembers }) => {
       let member;
