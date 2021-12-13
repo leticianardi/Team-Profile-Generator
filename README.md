@@ -20,7 +20,7 @@ npm i inquirer
 
 The following image shows the generated HTML’s appearance and functionality. 
 
-<imr src="src\images\secreenshot.png" />
+<img src ="./src/images/secreenshot.png"/>
 
 
 ## Usage
@@ -31,7 +31,8 @@ node index.js
 ```
 
 Here's a demonstration on how this app works.
-<img src=".src\images\gif.gif" />
+
+<img src ="./src/images/gif.gif" />
 
 
 ## Contributing
