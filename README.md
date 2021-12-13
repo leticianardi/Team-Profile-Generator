@@ -20,7 +20,7 @@ npm i inquirer
 
 The following image shows the generated HTML’s appearance and functionality. 
 
-![HTML webpage titled “Our Team Members” features three boxes listing employee names, titles, and other key info.](.src\images\secreenshot.png).
+<imr src="src\images\secreenshot.png" />
 
 
 ## Usage
